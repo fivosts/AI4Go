@@ -7,6 +7,8 @@ import torch
 import model
 import dataloader
 
+from AI4Go.util import crypto
+
 from absl import flags
 
 FLAGS = flags.FLAGS
@@ -46,6 +48,9 @@ class Trainer(object):
     return
 
   def Train(self):
+    """
+    Train.
+    """
     return
 
   def Sample(self):
