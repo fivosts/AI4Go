@@ -28,9 +28,9 @@ class JSONTraces(TraceDataloader):
   def compute_dataset(self) -> None:
     raise NotImplementedError
 
-class ByteTensor(TraceDataloader):
+class ByteTraces(TraceDataloader):
   def __init__(self, byte_base_path: pathlib.Path):
-    super(ByteTensor, self).__init__()
+    super(ByteTraces, self).__init__()
     for file in byte_base_path.iterdir():
       if file.suffix == ".trace":
         with open(file, 'r') as inf:
