@@ -7,12 +7,6 @@ from absl import flags
 
 FLAGS = flags.FLAGS
 
-flags.DEFINE_int(
-  "batch_size",
-  None,
-  "Model batch size."
-)
-
 class CNN4Go(torch.nn.Module):
   def __init__(self):
     return
