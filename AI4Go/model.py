@@ -10,6 +10,48 @@ from absl import flags
 
 FLAGS = flags.FLAGS
 
+FLAGS.DEFINE_integer(
+  "embedding_size",
+  None,
+  "Dimension of projection for embeddings."
+)
+
+FLAGS.DEFINE_integer(
+  "sequence_length",
+  None,
+  "Maximum sequence length allowed by Transformer-based model."
+)
+
+FLAGS.DEFINE_float(
+  "dropout_prob",
+  None,
+  "Set probability for dropout."
+)
+
+FLAGS.DEFINE_integer(
+  "num_attention_heads",
+  None,
+  "Number of heads per transformer."
+)
+
+FLAGS.DEFINE_float(
+  "layer_norm_eps",
+  None,
+  "Layer norm EPS"
+)
+
+FLAGS.DEFINE_integer(
+  "transformer_feedforward",
+  None,
+  "Feature size of transformer's FC."
+)
+
+FLAGS.DEFINE_integer(
+  "num_transformer_layers",
+  None,
+  "Set number of Transformer layers"
+)
+
 class PositionalEncoding(torch.nn.Module):
   def __init__(self, sequence_length: int, embedding_size: int, dropout_prob: float):
     super().__init__()
