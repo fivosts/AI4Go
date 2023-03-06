@@ -15,8 +15,7 @@
 """PyTorch optimization for BERT model."""
 import math
 import typing
-
-from deeplearning.benchpress.util.pytorch import torch
+import torch
 
 def create_optimizer_and_scheduler(model,
                                    num_train_steps: int,

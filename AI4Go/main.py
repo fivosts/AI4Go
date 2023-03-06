@@ -38,6 +38,7 @@ def main(*args, **kwargs) -> None:
   p = pathlib.Path(FLAGS.workspace_path)
   p.mkdir(exists_ok = True, parents = True)
   t = trainer.Trainer(p)
+  t.Train()
   return
 
 if __name__ == "__main__":
