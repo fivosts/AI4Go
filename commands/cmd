@@ -1,1 +1,11 @@
-python ./AI4Go/main.py --workspace_path ./temp
+python ./AI4Go/main.py \
+--workspace_path ./temp \
+--corpus_base_path ./data \
+--corpus_type="json" \
+--model="Transformer" \
+--batch_size 64 \
+--num_train_steps 100 \
+--num_warmup_steps 20 \
+--steps_per_epoch 20 \
+--learning_rate 0.000045 \
+--temperature 0.7 \
