@@ -36,7 +36,7 @@ def main(*args, **kwargs) -> None:
   if FLAGS.workspace_path is None:
     raise ValueError("You have to set workspace path")
   p = pathlib.Path(FLAGS.workspace_path)
-  p.mkdir(exists_ok = True, parents = True)
+  p.mkdir(exist_ok = True, parents = True)
   t = trainer.Trainer(p)
   t.Train()
   return
