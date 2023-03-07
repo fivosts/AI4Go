@@ -9,7 +9,7 @@ import optimizer
 import dataset
 from collections import OrderedDict
 
-from AI4Go.util import crypto
+from util import crypto
 
 from absl import flags
 
@@ -103,12 +103,18 @@ class Trainer(object):
 
     ## Create workspace.
     self.hash = crypto.sha256_str(
-      FLAGS.model +
-      FLAGS.corpus_type +
-      FLAGS.batch_size +
-      FLAGS.num_train_steps +
-      FLAGS.learning_rate +
-      self.model.hash
+      str(FLAGS.model) +
+      str(FLAGS.corpus_type) +
+      str(FLAGS.batch_size) +
+      str(FLAGS.num_train_steps) +
+      str(FLAGS.learning_rate) +
+      str(FLAGS.embedding_size) +
+      str(FLAGS.sequence_length) +
+      str(FLAGS.dropout_prob) +
+      str(FLAGS.num_attention_heads) +
+      str(FLAGS.layer_norm_eps) +
+      str(FLAGS.transformer_feedforward) +
+      str(FLAGS.num_transformer_layers)
     )
     self.model_dir = self.workspace_path / self.hash
     if not self.model_dir.exists():

@@ -5,7 +5,7 @@ import torch
 import pathlib
 import json
 
-class TraceDataloader(torch.utils.data.Dataloader):
+class TraceDataloader(torch.utils.data.Dataset):
   def __init__(self):
     self.data = []
     return
