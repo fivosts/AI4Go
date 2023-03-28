@@ -113,10 +113,10 @@ class Transformer4Go(torch.nn.Module):
     )
     self.mapper    = torch.nn.Linear(embedding_size, vocab_size)
     self.reducer   = torch.nn.Linear(vocab_size, 1)
-    self.transpose = lambda t: torch.reshape(t, (-1, 1, sequence_length))
-    self.repeater  = lambda t: t.repeat(1, sequence_length, 1)
+    self.transpose = lambda t: torch.reshape(t, (-1, 1, sequence_length)).squeeze(1)
+    self.head      = torch.nn.Linear(sequence_length, 2)
     self.embedding_size = embedding_size
-    self.init_weights()    
+    self.init_weights()
     return
 
   def forward(self, inputs: typing.Dict[str, torch.Tensor]) -> typing.Dict[str, torch.Tensor]:
@@ -130,7 +130,7 @@ class Transformer4Go(torch.nn.Module):
     mapped_state = self.mapper(hidden_state)
     reduced_state = self.reducer(mapped_state)
     reshaped_state = self.transpose(reduced_state)
-    output = self.repeater(reshaped_state)
+    output = self.head(reshaped_state)
     return {
       'output_logits': output
     }
@@ -142,4 +142,6 @@ class Transformer4Go(torch.nn.Module):
     self.mapper.weight.data.uniform_(-initrange, initrange)
     self.reducer.bias.data.zero_()
     self.reducer.weight.data.uniform_(-initrange, initrange)
+    self.head.weight.data.uniform_(-initrange, initrange)
+    self.head.bias.data.zero_()
     return
