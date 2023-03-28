@@ -54,7 +54,6 @@ flags.DEFINE_float(
 class Trainer(object):
   def __init__(self, workspace_path: pathlib.Path):
     self.workspace_path = workspace_path
-    self.ckpt_path = self.workspace_path / "checkpoint"
     ## Set pytorch.
     self.num_gpus = None
     if torch.cuda.is_available():
@@ -128,6 +127,7 @@ class Trainer(object):
       str(FLAGS.num_transformer_layers)
     )
     self.model_dir = self.workspace_path / self.hash
+    self.ckpt_path = self.model_dir / "checkpoint"
     if not self.model_dir.exists():
       (self.model_dir / "checkpoint").mkdir(exist_ok = False, parents = True)
       (self.model_dir / "logs").mkdir(exist_ok = False, parents = True)
@@ -152,6 +152,7 @@ class Trainer(object):
         for batch_step in range(0, FLAGS.steps_per_epoch, FLAGS.batch_size):
           ## get batch
           try:
+            print(loader)
             inputs = next(loader)
           except StopIteration:
             loader = None
@@ -231,8 +232,8 @@ class Trainer(object):
           new_state_dict[name] = v
         model.load_state_dict(new_state_dict)
     if optimizer is not None and scheduler is not None and ckpt_step > 0:
-      optimizer.load_state_dict(torch.load(ckpt_comp("optimizer"), map_location=self.pytorch.device))
-      scheduler.load_state_dict(torch.load(ckpt_comp("scheduler"), map_location=self.pytorch.device))
+      optimizer.load_state_dict(torch.load(ckpt_comp("optimizer"), map_location='cuda'))
+      scheduler.load_state_dict(torch.load(ckpt_comp("scheduler"), map_location='cuda'))
     model.eval()
     return ckpt_step
 
