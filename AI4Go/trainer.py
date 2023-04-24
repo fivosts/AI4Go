@@ -3,6 +3,8 @@ Train dispatching file.
 """
 import logging
 import pathlib
+import tqdm
+import copy
 import torch
 import model
 import optimizer
@@ -72,11 +74,22 @@ class Trainer(object):
         "json": lambda: dataset.JSONTraces(self.corpus_path, FLAGS.sequence_length),
         "bytes": lambda: dataset.ByteTraces(self.corpus_path),
       }[FLAGS.corpus_type]()
+      self.val_dataset = copy.deepcopy(self.dataset)
+      self.val_dataset.is_train = False
+      print(len(self.dataset))
       self.train_sampler = torch.utils.data.RandomSampler(self.dataset, replacement = False)
+      self.val_sampler = torch.utils.data.RandomSampler(self.val_dataset, replacement = False)
       self.dataloader = torch.utils.data.dataloader.DataLoader(
         dataset = self.dataset,
         batch_size = FLAGS.batch_size,
         sampler = self.train_sampler,
+        num_workers = 0,
+        drop_last = False
+      )
+      self.val_dataloader = torch.utils.data.dataloader.DataLoader(
+        dataset = self.val_dataset,
+        batch_size = FLAGS.batch_size,
+        sampler = self.val_sampler,
         num_workers = 0,
         drop_last = False
       )
@@ -144,23 +157,22 @@ class Trainer(object):
       self.model.train()
       loss_fn = torch.nn.CrossEntropyLoss()
       loader = iter(self.dataloader)
-      for epoch in range(self.current_step, FLAGS.num_train_steps, FLAGS.steps_per_epoch):
+      for epoch in tqdm.tqdm(range(self.current_step, FLAGS.num_train_steps, FLAGS.steps_per_epoch), total = FLAGS.num_train_steps // FLAGS.steps_per_epoch, desc =  "Epoch"):
         ## New epoch
         epoch_loss = []
         if self.current_step > epoch * FLAGS.steps_per_epoch:
           continue
-        for batch_step in range(0, FLAGS.steps_per_epoch, FLAGS.batch_size):
+        for batch_step in tqdm.tqdm(range(0, FLAGS.steps_per_epoch, FLAGS.batch_size), total = FLAGS.steps_per_epoch // FLAGS.batch_size, desc = "Batch"):
           ## get batch
           try:
-            print(loader)
             inputs = next(loader)
           except StopIteration:
-            loader = None
+            loader = iter(self.dataloader)
           outputs = self.model(inputs['inputs'].to('cuda'))
-          print(outputs['output_logits'])
-          print(outputs['output_logits'].shape)
-          print(inputs['target'].squeeze(1))
-          print(inputs['target'].squeeze(1).shape)
+          # print(outputs['output_logits'])
+          # print(outputs['output_logits'].shape)
+          # print(inputs['target'].squeeze(1))
+          # print(inputs['target'].squeeze(1).shape)
           loss = loss_fn(outputs['output_logits'], inputs['target'].squeeze(1).to('cuda')).mean()
           loss.backward()
           epoch_loss.append(loss.item())
@@ -170,7 +182,21 @@ class Trainer(object):
           self.current_step += FLAGS.batch_size
         logging.info("Epoch {} Average Loss: {}".format(epoch, sum(epoch_loss) / len(epoch_loss)))
         self.saveCheckpoint(self.current_step, self.model, self.scheduler, self.optimizer)
+        self.Validate()
     logging.info("Model has been trained for {} steps".format(FLAGS.num_train_steps))
+    return
+
+  def Validate(self):
+    with torch.no_grad():
+      accuracy = [0, 0]
+      self.model.eval()
+      for inputs in self.val_dataloader:
+        outputs = self.model(inputs['inputs'].to('cuda'))
+        output_labels = torch.argmax(torch.softmax(outputs['output_logits'], dim = -1).cpu(), dim = -1)
+        accuracy[0] += sum(output_labels == inputs['target'].reshape(-1,))
+        accuracy[1] += output_labels.size(0)
+      logging.info("Epoch val accuracy: {}".format(accuracy[0] / accuracy[1]))
+      self.model.train()
     return
 
   def Sample(self):
