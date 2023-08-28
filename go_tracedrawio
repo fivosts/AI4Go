@@ -1,9 +1,24 @@
-<mxfile host="app.diagrams.net" modified="2023-08-28T05:12:21.343Z" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36" etag="UnahCNyDLItzdsU7mHzh" version="21.6.9" type="github">
+<mxfile host="app.diagrams.net" modified="2023-08-28T05:15:23.665Z" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36" etag="MounFoL-LF32JvWvskZx" version="21.6.9" type="github">
   <diagram name="Page-1" id="4fwDMKVcYzckaoT_ff-L">
     <mxGraphModel dx="1242" dy="704" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
+        <mxCell id="QnWoKv_CZ6rDgWVon2XE-1" value="&lt;font face=&quot;Times New Roman&quot;&gt;Go Routine&lt;/font&gt;" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="180" y="260" width="50" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="QnWoKv_CZ6rDgWVon2XE-3" value="&lt;font face=&quot;Times New Roman&quot;&gt;Go Routine&lt;/font&gt;" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="190" y="290" width="50" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="QnWoKv_CZ6rDgWVon2XE-4" value="&lt;font face=&quot;Times New Roman&quot;&gt;Go Routine&lt;/font&gt;" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="200" y="320" width="50" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="QnWoKv_CZ6rDgWVon2XE-5" value="" style="shape=curlyBracket;whiteSpace=wrap;html=1;rounded=1;labelPosition=left;verticalLabelPosition=middle;align=right;verticalAlign=middle;rotation=-90;" vertex="1" parent="1">
+          <mxGeometry x="208.13" y="328.13" width="20" height="88.75" as="geometry" />
+        </mxCell>
+        <mxCell id="QnWoKv_CZ6rDgWVon2XE-6" value="&lt;font face=&quot;Times New Roman&quot;&gt;GoBench&lt;/font&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="188.13" y="375" width="60" height="30" as="geometry" />
+        </mxCell>
       </root>
     </mxGraphModel>
   </diagram>
